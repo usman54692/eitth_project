@@ -1,20 +1,31 @@
-import React from 'react';
 import './App.css'
 import { useSelector, useDispatch } from 'react-redux';
-
+import { fetchProducts } from './redux/features/ProductSlice';
+import { useEffect } from 'react';
 
 function App() {
-  const product=useSelector((state)=>state.product.products)
-  const dispatch=useDispatch()
-  
-     console.log(product);
-      
-     
-  
+
+  const dispatch = useDispatch()
+
+  const products = useSelector((store)=>store.product.products)
+
+  useEffect(()=>{
+    dispatch(fetchProducts())
+  },[dispatch])
 
   return (
     <>
-     <h1>Fetch All Products</h1>
+      <h1>Fetch All Products</h1>
+
+      {
+        products?.map((product,index)=>(
+          <div key={index}>
+            <img src={product.image} alt="" width="100"/>
+            <h2>{product.category}</h2>
+          </div>
+        ))
+      }
+
     </>
   )
 }
